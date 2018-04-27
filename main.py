@@ -3,6 +3,8 @@ import time
 
 
 class Board:
+    BOARD_SIZE = 9
+
     def __init__(self):
         self.table = {}
         self.counter = 0
@@ -87,6 +89,11 @@ class Board:
 
             print(row)
 
+    def __len__(self):
+        return self.counter
+
+    def remaining_counts(self):
+        return self.BOARD_SIZE - len(self)
 
 class IGame:
 
@@ -138,15 +145,22 @@ class Bot(IPlayer):
         time.sleep(1)
 
         moved = False
+        rnd = random.randint(0, board.remaining_counts() - 1)
+
+        ctr = 0
 
         for x in range(3):
             if moved:
                 break
             for y in range(3):
                 if (x, y) not in board.table:
-                    board.add_token(x, y, self.token)
-                    moved = True
-                    break
+                    if ctr == rnd:
+                        board.add_token(x, y, self.token)
+                        moved = True
+                        break
+
+                    else:
+                        ctr += 1
 
         if not moved:
             raise Exception("Board is full")
