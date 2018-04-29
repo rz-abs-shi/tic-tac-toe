@@ -1,15 +1,9 @@
-import random
-import time
-
-from mini_engine.player import IPlayer
 from game.players.random_bot import RandomBot
 
 
 class SmartBot(RandomBot):
 
     def next_move(self, board):
-        print("Bot thinking")
-        time.sleep(1)
 
         for x in range(3):
             for y in range(3):
@@ -27,6 +21,8 @@ class SmartBot(RandomBot):
                         board.delete_token(x, y)
                         board.add_token(x, y, self.token)
                         return
+                    else:
+                        board.delete_token(x, y)
 
 
         return super(SmartBot, self).next_move(board)

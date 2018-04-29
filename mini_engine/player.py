@@ -1,5 +1,6 @@
 
 class IPlayer:
+    is_bot = True
 
     def __init__(self, token, opponent_token):
         self.token = token

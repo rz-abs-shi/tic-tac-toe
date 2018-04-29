@@ -1,0 +1,4 @@
+
+
+class ExitGameInterrupt(Exception):
+    pass

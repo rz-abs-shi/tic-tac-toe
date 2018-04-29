@@ -1,3 +1,5 @@
+from mini_engine.exceptions import ExitGameInterrupt
+
 
 class IGame:
 
@@ -5,8 +7,11 @@ class IGame:
 
         self.start()
 
-        while self.update():
-            pass
+        try:
+            while self.update():
+                pass
+        except ExitGameInterrupt:
+            print("Game exited.")
 
     def start(self):
         pass

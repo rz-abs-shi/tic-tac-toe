@@ -19,6 +19,7 @@ class Board:
     def delete_token(self, x, y):
         if (x, y) in self.table:
             del self.table[x, y]
+            self.counter -= 1
             return True
 
         return False

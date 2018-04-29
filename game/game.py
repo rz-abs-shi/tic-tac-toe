@@ -1,21 +1,31 @@
 from mini_engine.game import IGame
 from game.board import Board
-from game.players import Human, RandomBot
+from game.players import Human, RandomBot, SmartBot
+import time
+import os
 
 
 class TicTacToeGame(IGame):
+    first_player = RandomBot
+    second_player = SmartBot
 
     def start(self):
         self.board = Board()
-        self.players = [Human('X'), RandomBot('O')]
+        self.players = [self.first_player('X', 'O'), self.second_player('O', 'X')]
         self.turn = 0
-        print ("Tic Tac Toa %s vs %s" % (Human.__name__, RandomBot.__name__))
+        print ("Tic Tac Toa %s vs %s" % tuple(player.__class__.__name__ for player in self.players))
 
     def update(self):
-
+        os.system('cls')
         self.board.print()
 
-        self.players[self.turn].next_move(self.board)
+        player = self.players[self.turn]
+
+        if player.is_bot:
+            print("Bot is thinking")
+            time.sleep(1)
+
+        player.next_move(self.board)
         self.turn = 1 - self.turn
 
         # Check win conditions
