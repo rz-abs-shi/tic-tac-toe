@@ -16,18 +16,11 @@ class RandomBot(IPlayer):
         ctr = 0
 
         for x in range(3):
-            if moved:
-                break
             for y in range(3):
                 if (x, y) not in board.table:
                     if ctr == rnd:
                         board.add_token(x, y, self.token)
-                        moved = True
-                        break
+                        return
 
                     else:
                         ctr += 1
-
-        if not moved:
-            raise Exception("Board is full")
-

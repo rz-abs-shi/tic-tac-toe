@@ -16,6 +16,13 @@ class Board:
 
         return False
 
+    def delete_token(self, x, y):
+        if (x, y) in self.table:
+            del self.table[x, y]
+            return True
+
+        return False
+
     def is_full(self):
         return self.counter == 9
 
