@@ -1,5 +1,4 @@
 import random
-import time
 
 from mini_engine.player import IPlayer
 
@@ -7,8 +6,6 @@ from mini_engine.player import IPlayer
 class RandomBot(IPlayer):
 
     def next_move(self, board):
-
-        time.sleep(1)
 
         rnd = random.randint(0, board.remaining_counts() - 1)
 

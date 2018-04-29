@@ -6,7 +6,7 @@ import os
 
 
 class TicTacToeGame(IGame):
-    first_player = RandomBot
+    first_player = SmartBot
     second_player = SmartBot
 
     def start(self):
@@ -23,7 +23,7 @@ class TicTacToeGame(IGame):
 
         if player.is_bot:
             print("Bot is thinking")
-            time.sleep(1)
+            # time.sleep(1)
 
         player.next_move(self.board)
         self.turn = 1 - self.turn
