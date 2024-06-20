@@ -7,19 +7,10 @@ class Board:
         self.counter = 0
 
     def add_token(self, x, y, token):
-
         if 0 <= x < 3 and 0 <= y < 3 and not (x, y) in self.table:
             self.table[x, y] = token
             self.counter += 1
 
-            return True
-
-        return False
-
-    def delete_token(self, x, y):
-        if (x, y) in self.table:
-            del self.table[x, y]
-            self.counter -= 1
             return True
 
         return False
@@ -31,8 +22,7 @@ class Board:
         if (x, y) in self.table:
             return self.table[x, y]
 
-    def does_token_won(self, token):
-
+    def is_winner(self, token):
         for x in range(3):
 
             won = True

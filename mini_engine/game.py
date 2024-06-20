@@ -2,9 +2,7 @@ from mini_engine.exceptions import ExitGameInterrupt
 
 
 class IGame:
-
     def run_loop(self):
-
         self.start()
 
         try:

@@ -5,8 +5,7 @@ from mini_engine.player import IPlayer
 
 class RandomBot(IPlayer):
 
-    def next_move(self, board):
-
+    def _next_move(self, board):
         rnd = random.randint(0, board.remaining_counts() - 1)
 
         ctr = 0

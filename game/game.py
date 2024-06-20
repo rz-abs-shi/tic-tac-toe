@@ -1,39 +1,49 @@
-from mini_engine.game import IGame
-from game.board import Board
-from game.players import Human, RandomBot, SmartBot
 import time
-import os
+
+from game.board import Board
+from mini_engine.game import IGame
 
 
 class TicTacToeGame(IGame):
-    first_player = SmartBot
-    second_player = SmartBot
+    def __init__(self, players: list, move_delay: int = 0):
+        assert len(players) == 2
+        assert move_delay >= 0
+
+        self.first_player = players[0]
+        self.second_player = players[1]
+
+        self.move_delay = move_delay
+        self.players = [players[0]('X'), players[1]('O')]
+        self.board = Board()
+
+        self.winner = None
+        self.turn = 0
 
     def start(self):
-        self.board = Board()
-        self.players = [self.first_player('X', 'O'), self.second_player('O', 'X')]
-        self.turn = 0
-        print ("Tic Tac Toa %s vs %s" % tuple(player.__class__.__name__ for player in self.players))
-
-    def update(self):
-        os.system('cls')
+        print("Tic Tac Toa %s vs %s" % tuple(player.__class__.__name__ for player in self.players))
         self.board.print()
 
+    def update(self):
         player = self.players[self.turn]
 
         if player.is_bot:
             print("Bot is thinking")
-            # time.sleep(1)
+
+            if self.move_delay:
+                time.sleep(self.move_delay)
 
         player.next_move(self.board)
-        self.turn = 1 - self.turn
+        self.board.print()
 
         # Check win conditions
         for token in ['X', 'O']:
-            if self.board.does_token_won(token):
+            if self.board.is_winner(token):
                 self.board.print()
-
-                print ("Player %s won the game" % token)
+                self.winner = player
+                print("Player %s won the game" % token)
                 return False
 
-        return not self.board.is_full()
+        game_finished = self.board.is_full()
+        self.turn = 1 - self.turn
+
+        return not game_finished

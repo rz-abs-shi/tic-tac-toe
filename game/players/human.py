@@ -5,9 +5,8 @@ from mini_engine.exceptions import ExitGameInterrupt
 class Human(IPlayer):
     is_bot = False
 
-    def next_move(self, board):
-        input_got = False
-        while not input_got:
+    def _next_move(self, board):
+        while True:
             inp = input("Please Enter x,y: ")
             if inp == 'exit':
                 raise ExitGameInterrupt
@@ -17,11 +16,12 @@ class Human(IPlayer):
                 continue
 
             try:
-                x = int(inp[0])
-                y = int(inp[1])
+                x = int(inp[0].strip())
+                y = int(inp[1].strip())
             except:
                 continue
 
             if board.add_token(x, y, self.token):
-                input_got = True
+                return
 
+            print("Invalid input. Try again")
