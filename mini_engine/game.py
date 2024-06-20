@@ -16,4 +16,3 @@ class IGame:
 
     def update(self):
         pass
-

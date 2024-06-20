@@ -1,15 +1,12 @@
 
 class IPlayer:
-    is_bot = True
-
-    def __init__(self, token):
+    def __init__(self, token: int, fast_mode: bool = True, debug: bool = False):
         self.token = token
+        self.fast_mode = fast_mode
+        self.debug = debug
 
-    def _next_move(self, board):
+    def get_move(self, board):
         raise NotImplementedError
 
-    def next_move(self, board):
-        self._next_move(board)
-
     def __str__(self):
-        return self.token
+        return f"Player {self.token}"

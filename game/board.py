@@ -1,69 +1,42 @@
 
 class Board:
-    BOARD_SIZE = 9
+    TOKEN_VERBOSE = ('-', 'X', 'O')
+    TOKENS = (1, 2)
+
+    WINS = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+    ]
 
     def __init__(self):
-        self.table = {}
-        self.counter = 0
+        self._table = [0] * 9
+        self._size = 0
+        self._moves = []
 
-    def add_token(self, x, y, token):
-        if 0 <= x < 3 and 0 <= y < 3 and not (x, y) in self.table:
-            self.table[x, y] = token
-            self.counter += 1
+    def add_token(self, position: int, token: int):
+        assert token in self.TOKENS
+        assert 0 <= position < 9
+        assert not self._table[position]
 
-            return True
-
-        return False
+        self._table[position] = token
+        self._size += 1
+        self._moves.append(position)
 
     def is_full(self):
-        return self.counter == 9
+        return self._size == 9
 
-    def get_token(self, x, y):
-        if (x, y) in self.table:
-            return self.table[x, y]
+    def is_winner(self, token: int):
+        assert token in self.TOKENS
+        for win in self.WINS:
+            win_pos = list(filter(lambda pos: self._table[pos] == token, win))
 
-    def is_winner(self, token):
-        for x in range(3):
-
-            won = True
-            for y in range(3):
-                if self.get_token(x, y) != token:
-                    won = False
-                    break
-            if won:
+            if len(win_pos) == len(win):
                 return True
-
-        for y in range(3):
-            won = True
-            for x in range(3):
-                if self.get_token(x, y) != token:
-                    won = False
-                    break
-            if won:
-                return True
-
-        won = True
-        for i in range(3):
-            if self.get_token(i, i) != token:
-                won = False
-                break
-
-        if won:
-            return True
-
-        won = True
-        for i in range(3):
-            if self.get_token(i, 2 - i) != token:
-                won = False
-                break
-
-        if won:
-            return True
 
         return False
 
     def print(self):
-
         for x in range(3):
             row = ""
             start = True
@@ -72,20 +45,28 @@ class Board:
 
                 if not start:
                     row += "|"
-
                 else:
                     start = False
 
-                if (x, y) in self.table:
-                    row += self.table[x, y]
-
-                else:
-                    row += '-'
+                token = self._table[x * 3 + y]
+                row += self.TOKEN_VERBOSE[token]
 
             print(row)
 
-    def __len__(self):
-        return self.counter
+    @property
+    def cap(self):
+        return 9
 
-    def remaining_counts(self):
-        return self.BOARD_SIZE - len(self)
+    @property
+    def size(self):
+        return self._size
+
+    @property
+    def remaining(self):
+        return self.cap - self.size
+
+    def get_free_positions(self):
+        return list(filter(lambda pos: not self._table[pos], range(9)))
+
+    def is_empty(self, pos: int):
+        return self._table[pos] == 0

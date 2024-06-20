@@ -5,45 +5,50 @@ from mini_engine.game import IGame
 
 
 class TicTacToeGame(IGame):
-    def __init__(self, players: list, move_delay: int = 0):
+    def __init__(self, players: list, monitor: bool = True, fast_mode: bool = True, debug: bool = False):
         assert len(players) == 2
-        assert move_delay >= 0
+        self.monitor = monitor
 
-        self.first_player = players[0]
-        self.second_player = players[1]
-
-        self.move_delay = move_delay
-        self.players = [players[0]('X'), players[1]('O')]
+        self.players = [
+            players[0](token=1, fast_mode=fast_mode, debug=debug),
+            players[1](token=2, fast_mode=fast_mode, debug=debug),
+        ]
         self.board = Board()
 
         self.winner = None
         self.turn = 0
 
     def start(self):
-        print("Tic Tac Toa %s vs %s" % tuple(player.__class__.__name__ for player in self.players))
-        self.board.print()
+        if self.monitor:
+            print("Tic Tac Toa %s vs %s" % tuple(player.__class__.__name__ for player in self.players))
+            self.board.print()
 
     def update(self):
         player = self.players[self.turn]
 
-        if player.is_bot:
-            print("Bot is thinking")
+        if self.monitor:
+            print(f"\nTurn {self.board.TOKEN_VERBOSE[player.token]}:")
 
-            if self.move_delay:
-                time.sleep(self.move_delay)
+        pos = player.get_move(self.board)
+        self.board.add_token(pos, player.token)
 
-        player.next_move(self.board)
-        self.board.print()
+        if self.monitor:
+            self.board.print()
 
         # Check win conditions
-        for token in ['X', 'O']:
-            if self.board.is_winner(token):
+        if self.board.is_winner(player.token):
+            self.winner = player
+
+            if self.monitor:
                 self.board.print()
-                self.winner = player
-                print("Player %s won the game" % token)
-                return False
+                print("Player %s won the game" % player)
+
+            return False
 
         game_finished = self.board.is_full()
         self.turn = 1 - self.turn
+
+        if game_finished and self.monitor:
+            print("Game finished without winner!")
 
         return not game_finished

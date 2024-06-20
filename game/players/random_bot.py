@@ -1,21 +1,18 @@
 import random
+import time
 
 from mini_engine.player import IPlayer
 
 
 class RandomBot(IPlayer):
 
-    def _next_move(self, board):
-        rnd = random.randint(0, board.remaining_counts() - 1)
+    def get_move(self, board):
+        if not self.fast_mode:
+            print("Bot is thinking")
+            time.sleep(2)
 
-        ctr = 0
+        free_pos = board.get_free_positions()
+        if self.debug:
+            print(f"free_pos: {free_pos}")
 
-        for x in range(3):
-            for y in range(3):
-                if (x, y) not in board.table:
-                    if ctr == rnd:
-                        board.add_token(x, y, self.token)
-                        return
-
-                    else:
-                        ctr += 1
+        return random.choice(free_pos)
