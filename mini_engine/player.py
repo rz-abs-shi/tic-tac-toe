@@ -10,3 +10,6 @@ class IPlayer:
 
     def __str__(self):
         return f"Player {self.token}"
+
+    def get_opponent_token(self):
+        return 3 - self.token

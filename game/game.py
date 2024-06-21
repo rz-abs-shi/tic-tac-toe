@@ -8,6 +8,7 @@ class TicTacToeGame(IGame):
     def __init__(self, players: list, monitor: bool = True, fast_mode: bool = True, debug: bool = False):
         assert len(players) == 2
         self.monitor = monitor
+        self.debug = debug
 
         self.players = [
             players[0](token=1, fast_mode=fast_mode, debug=debug),
@@ -16,7 +17,6 @@ class TicTacToeGame(IGame):
         self.board = Board()
 
         self.winner = None
-        self.turn = 0
 
     def start(self):
         if self.monitor:
@@ -24,12 +24,15 @@ class TicTacToeGame(IGame):
             self.board.print()
 
     def update(self):
-        player = self.players[self.turn]
+        player = self.players[self.board.get_turn() - 1]
 
         if self.monitor:
             print(f"\nTurn {self.board.TOKEN_VERBOSE[player.token]}:")
 
         pos = player.get_move(self.board)
+        if self.debug:
+            print(f"{player} selected: {pos}")
+
         self.board.add_token(pos, player.token)
 
         if self.monitor:
@@ -46,7 +49,6 @@ class TicTacToeGame(IGame):
             return False
 
         game_finished = self.board.is_full()
-        self.turn = 1 - self.turn
 
         if game_finished and self.monitor:
             print("Game finished without winner!")

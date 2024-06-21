@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 
 class Board:
     TOKEN_VERBOSE = ('-', 'X', 'O')
@@ -13,6 +15,24 @@ class Board:
         self._table = [0] * 9
         self._size = 0
         self._moves = []
+
+    def set_moves(self, moves: list):
+        for m in moves:
+            self.add_token(m, self.get_turn())
+
+    def undo(self):
+        if not self._moves:
+            return
+
+        p = self._moves.pop()
+        self._size -= 1
+        self._table[p] = 0
+
+    def clone(self):
+        return deepcopy(self)
+
+    def get_turn(self):
+        return (self._size % 2) + 1
 
     def add_token(self, position: int, token: int):
         assert token in self.TOKENS
