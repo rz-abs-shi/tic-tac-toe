@@ -16,7 +16,9 @@ nvidia-cusparse-cu12==12.1.0.106
 nvidia-nccl-cu12==2.20.5
 nvidia-nvjitlink-cu12==12.5.40
 nvidia-nvtx-cu12==12.1.105
+six==1.16.0
 sympy==1.12.1
 torch==2.3.1
+treelib==1.7.0
 triton==2.3.1
 typing-extensions==4.12.2

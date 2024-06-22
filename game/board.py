@@ -56,7 +56,8 @@ class Board:
 
         return False
 
-    def print(self):
+    def __str__(self):
+        rows = []
         for x in range(3):
             row = ""
             start = True
@@ -71,7 +72,11 @@ class Board:
                 token = self._table[x * 3 + y]
                 row += self.TOKEN_VERBOSE[token]
 
-            print(row)
+            rows.append(row)
+        return '\n'.join(rows)
+
+    def print(self):
+        print(self)
 
     @property
     def cap(self):
