@@ -1,5 +1,3 @@
-import time
-
 from game.board import Board
 from mini_engine.game import IGame
 

@@ -3,12 +3,14 @@ from .tree import Node
 
 
 class Minimax:
-    def __init__(self, board: Board, token):
-        self.token = token
+    def __init__(self, board: Board):
+        self.token = 1
+        print("loading minimax")
         self.board = board
         self.tree = Node(key="init", data={'board': str(self.board)})
         self._create_tree(board, self.tree)
         self._populate_rank(self.tree)
+        print("minimax loaded!")
 
     def _create_tree(self, board: Board, node: Node, depth: int = 10):
         if depth <= 0:
@@ -48,9 +50,9 @@ class Minimax:
             func = min
 
         ranks = list(filter(lambda x: x is not None, map(lambda n: n.data.get('rank'), node.children.values())))
-        if any(map(lambda x: x == target, ranks)):
-            node.data['rank'] = target
-            return
+        # if any(map(lambda x: x == target, ranks)):
+        #     node.data['rank'] = target
+        #     return
 
         if len(ranks) == len(node.children):
             node.data['rank'] = func(ranks)
@@ -59,16 +61,21 @@ class Minimax:
             if c.data.get('rank') is None:
                 self._populate_rank(c, not is_max)
 
-                if c.data.get('rank') == target:
-                    node.data['rank'] = target
-                    return
+                # if c.data.get('rank') == target:
+                #     node.data['rank'] = target
+                #     return
 
         ranks = list(filter(lambda x: x is not None, map(lambda n: n.data.get('rank'), node.children.values())))
         node.data['rank'] = func(ranks)
 
-    def get_max_child(self, node: Node):
+    def get_minimax_child(self, node: Node, token):
         rank = None
         _child = None
+
+        if token == 1:
+            func = max
+        else:
+            func = min
 
         for child in node.children.values():
             r = child.data.get('rank')
@@ -78,7 +85,7 @@ class Minimax:
                     rank = r
                     _child = child
 
-                elif r > rank:
+                elif func(r, rank) != rank:
                     rank = r
                     _child = child
 

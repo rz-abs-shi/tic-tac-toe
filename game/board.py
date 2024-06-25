@@ -57,7 +57,13 @@ class Board:
         return False
 
     def __str__(self):
+        return self.get_str()
+
+    def get_str(self, with_pos = False):
         rows = []
+
+        moves_map = {self._moves[i]: i for i in range(len(self._moves))}
+
         for x in range(3):
             row = ""
             start = True
@@ -69,8 +75,12 @@ class Board:
                 else:
                     start = False
 
-                token = self._table[x * 3 + y]
+                pos = x * 3 + y
+                token = self._table[pos]
                 row += self.TOKEN_VERBOSE[token]
+
+                if with_pos and token > 0:
+                    row += f':{moves_map[pos]}'
 
             rows.append(row)
         return '\n'.join(rows)

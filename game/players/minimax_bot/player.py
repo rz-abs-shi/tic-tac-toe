@@ -5,12 +5,20 @@ from game.board import Board
 from game.players.minimax_bot.minimax import Minimax
 from mini_engine.player import IPlayer
 
+_minimax = None
+
 
 class MinimaxBot(IPlayer):
 
     def __init__(self, *args, **kwargs):
+        global _minimax
+
         super(MinimaxBot, self).__init__(*args, **kwargs)
-        self.minimax = Minimax(Board(), self.token)
+
+        if not _minimax:
+            _minimax = Minimax(Board())
+
+        self.minimax = _minimax
 
     def get_move(self, board):
         if not self.fast_mode:
@@ -24,7 +32,7 @@ class MinimaxBot(IPlayer):
             if not node:
                 break
         else:
-            child = self.minimax.get_max_child(node)
+            child = self.minimax.get_minimax_child(node, self.token)
             if child:
                 return child.key
 
