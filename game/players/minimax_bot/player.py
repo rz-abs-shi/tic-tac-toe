@@ -9,6 +9,7 @@ _minimax = None
 
 
 class MinimaxBot(IPlayer):
+    name = 'minimax'
 
     def __init__(self, *args, **kwargs):
         global _minimax

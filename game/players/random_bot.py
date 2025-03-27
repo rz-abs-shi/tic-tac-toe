@@ -5,7 +5,8 @@ from mini_engine.player import IPlayer
 
 
 class RandomBot(IPlayer):
-
+    name = 'random'
+    
     def get_move(self, board):
         if not self.fast_mode:
             print("Bot is thinking")

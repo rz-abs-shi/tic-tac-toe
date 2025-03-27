@@ -1,5 +1,7 @@
 
 class IPlayer:
+    name: str = 'player'
+
     def __init__(self, token: int, fast_mode: bool = True, debug: bool = False):
         self.token = token
         self.fast_mode = fast_mode

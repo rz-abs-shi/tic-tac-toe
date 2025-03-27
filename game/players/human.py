@@ -4,6 +4,7 @@ from mini_engine.exceptions import ExitGameInterrupt
 
 class Human(IPlayer):
     is_bot = False
+    name = 'human'
 
     def get_move(self, board):
         while True:
