@@ -6,6 +6,8 @@ from mini_engine.player import IPlayer
 
 
 class RuleBot(IPlayer):
+    name = 'rule'
+    
     def get_winner_moves(self, board: Board, next_token: int):
         moves = []
         new_board = board.clone()
